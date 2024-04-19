@@ -49,6 +49,17 @@ app.put('/tasks/:id', (req, res) => {
     res.send(tasks);
 });
 
+app.delete('/tasks/:id', (req, res) => {
+    const id =  parseInt(req.params.id)
+    const task = tasks.find(task => task.id === id)
+    if (!id) {
+        res.status(404).json({ error: 'Task nicht gefunden' })
+    } else {
+        tasks.splice(task, 1)
+        res.status(200).json(task)
+    }
+})
+
 
 app.listen(port, () => {
     console.log(`Tasks API listening on port ${port}`);
