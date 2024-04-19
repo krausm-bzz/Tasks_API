@@ -55,15 +55,13 @@ app.get('/tasks/:id', (req, res) => {
 })
 
 app.put('/tasks/:id', (req, res) => {
-    tasks = tasks.map((task) => {
-        if(task.id === parseInt(req.params.id)) {
-            return {...task, ...req.body};
-        } else {
-            return task;
-        }
-    })
-    res.send(tasks);
-});
+    const id = req.params.id
+    const index = tasks.findIndex(task => task.id === id)
+    const task = tasks[index]
+    const newTask = { ...task, ...req.body }
+    tasks[index] = newTask
+    res.send(newTask)
+})
 
 app.delete('/tasks/:id', (req, res) => {
     const id =  parseInt(req.params.id)
