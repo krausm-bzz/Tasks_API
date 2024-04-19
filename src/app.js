@@ -57,10 +57,14 @@ app.get('/tasks/:id', (req, res) => {
 app.put('/tasks/:id', (req, res) => {
     const id = req.params.id
     const index = tasks.findIndex(task => task.id === id)
-    const task = tasks[index]
-    const newTask = { ...task, ...req.body }
-    tasks[index] = newTask
-    res.send(newTask)
+    if (!id) {
+        res.status(404).json({ error: 'Task nicht gefunden' })
+    } else {
+        const task = tasks[index]
+        const newTask = { ...task, ...req.body }
+        tasks[index] = newTask
+        res.status(200).send(newTask)
+    }
 })
 
 app.delete('/tasks/:id', (req, res) => {
@@ -85,9 +89,9 @@ app.post('/login', (req, res) => {
         req.session.user = user
         isAuthenticated = true
         req.session.isAuthenticated = isAuthenticated
-        res.status(201).json({ authorisation: "true" })
+        res.status(201).json({ authorisation: true })
     } else {
-        res.status(401).send('Unautorisiert')
+        res.status(401).json({ authorisation: false } )
     }
 })
 
@@ -95,7 +99,7 @@ app.get('/verify', authentication, (req, res) => {
     if (isAuthenticated) {
         res.status(201).json({ email: req.session.user.email })
     } else {
-        res.status(203).send('Unautorisiert')
+        res.status(203).json({ authorisation: false })
     }
 })
 
