@@ -3,8 +3,13 @@
     "body-parser": "^1.20.2",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "nodemon": "^3.1.0",
     "swagger": "^0.7.5",
-    "swagger-autogen": "^2.23.7"
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "nodemon src/app.js"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",
