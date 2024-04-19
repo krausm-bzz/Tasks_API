@@ -47,7 +47,7 @@ app.post('/tasks', (req, res) => {
 app.get('/tasks/:id', (req, res) => {
   const id = parseInt(req.params.id)
   const task = tasks.find(task => task.id === id)
-  if (!id) {
+  if (!task) {
     res.status(404).json({ error: 'Task nicht gefunden' })
   } else {
     res.status(200).json(task)
@@ -55,9 +55,9 @@ app.get('/tasks/:id', (req, res) => {
 })
 
 app.put('/tasks/:id', (req, res) => {
-  const id = req.params.id
-  const index = tasks.findIndex(task => task.id === id)
-  if (!id) {
+  const id = parseInt(req.params.id)
+  const index = tasks.findIndex(task => task.id === id) + 1
+  if (!index) {
     res.status(404).json({ error: 'Task nicht gefunden' })
   } else {
     const task = tasks[index]
@@ -70,7 +70,7 @@ app.put('/tasks/:id', (req, res) => {
 app.delete('/tasks/:id', (req, res) => {
   const id = parseInt(req.params.id)
   const task = tasks.find(task => task.id === id)
-  if (!id) {
+  if (!task) {
     res.status(404).json({ error: 'Task nicht gefunden' })
   } else {
     tasks.splice(task, 1)
@@ -95,8 +95,8 @@ app.post('/login', (req, res) => {
   }
 })
 
-app.get('/verify', authentication, (req, res) => {
-  if (isAuthenticated) {
+app.get('/verify', (req, res) => {
+  if (req.session.isAuthenticated === isAuthenticated) {
     res.status(201).json({ email: req.session.user.email })
   } else {
     res.status(203).json({ authorisation: false })
